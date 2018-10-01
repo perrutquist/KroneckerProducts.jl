@@ -1,0 +1,8 @@
+name = "KroneckerProducts"
+uuid = "eb0bedd0-c3dd-11e8-14ec-31a86de0be5c"
+authors = ["Per Rutquist <per.rutquist@gmail.com>"]
+version = "0.1.0"
+
+[deps]
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
