@@ -1,4 +1,4 @@
-# KroneckerProducts.jl - Efficient Kronecker products in Julia
+# KroneckerProducts.jl
 
 The [Kronecker product](https://en.wikipedia.org/wiki/Kronecker_product) of
 two matrices is a matrix whose size is the product of the sizes of the original
@@ -14,7 +14,7 @@ element of the new array is accessed, and many operations can be performed
 using specialised methods that do not require accessing all the elements of the
 Kronecker product.
 
-## Examples
+## Example
 
 The following code will create a `KroneckerProduct` matrix and then measure
 the time it takes to multiply a vector by that matrix. (This takes advantage
