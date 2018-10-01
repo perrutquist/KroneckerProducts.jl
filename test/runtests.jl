@@ -7,7 +7,7 @@ b = rand(ComplexF64, 4, 5)
 
 k_big = kron(a,b)
 
-k = KroneckerProduct(a,b)
+k = a ⊗ b
 
 @test k[1] == a[1]*b[1]
 @test k[end] == a[end]*b[end]

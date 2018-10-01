@@ -3,7 +3,7 @@ module KroneckerProducts
 using Base.Cartesian
 using LinearAlgebra
 
-export Kronecker, KroneckerProduct
+export Kronecker, KroneckerProduct, ⊗
 
 """
 A `Kronecker` object is a wrapper object that represents the applying a binary
@@ -41,6 +41,18 @@ It is a special case of a `Kronecker` object.
 KroneckerProduct{T,N,A,B} = Kronecker{T,N,typeof(*),A,B}
 KroneckerProduct{T,N}(a, b) where {T,N} = Kronecker{T,N}(*,a,b)
 KroneckerProduct(a, b) = Kronecker(*,a,b)
+
+"""
+    KroneckerProducts.kron(a, b)
+
+Form the Kronecker product of `a` and `b`, same as `Base.kron` but use a
+KroneckerProduct object when possible.
+"""
+kron(a, b) = Base.kron(a, b)
+kron(a::AbstractMatrix, b::AbstractMatrix) = KroneckerProduct(a, b)
+
+"The ⊗ operator is an alias for KroneckerProducts.kron"
+⊗(a,b) = kron(a,b)
 
 Base.size(x::Kronecker{T,N}) where {T,N} = ntuple(i->size(x.a, i)*size(x.b, i), N)
 
