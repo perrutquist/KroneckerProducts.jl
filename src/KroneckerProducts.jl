@@ -3,7 +3,7 @@ module KroneckerProducts
 using Base.Cartesian
 using LinearAlgebra
 
-export Kronecker, KroneckerProduct, ⊗
+export Kronecker, KroneckerProduct, KroneckerFactorization, ⊗
 
 """
 A `Kronecker` object is a wrapper object that represents the applying a binary
@@ -99,5 +99,38 @@ function LinearAlgebra.mul!(y!::Vector, x::KroneckerProduct{<:Any,2}, y::Abstrac
     mul!(reshape(y!, size(x.b,1), size(x.a,1)), tmp, transpose(x.a))
     y!
 end
+
+"A KroneckerFactorization is a factorization of a KroneckerProduct."
+struct KroneckerFactorization{T,A,B} <: Factorization{T}
+    a::A
+    b::B
+end
+
+KroneckerFactorization(a::A, b::B) where {A<:Factorization{T}, B<:Factorization{T}} where {T} =
+   KroneckerFactorization{T,A,B}(a,b)
+
+# TODO: handle case where factorizations have different element types
+for f in (:factorize, :lu, :qr, :cholesky)
+    @eval LinearAlgebra.$f(x::KroneckerProduct) = KroneckerFactorization($f(x.a), $f(x.b))
+end
+
+Base.size(x::KroneckerFactorization) = size(x.a).*size(x.b)
+Base.size(x::KroneckerFactorization, i::Integer) = size(x.a, i)*size(x.b, i)
+
+gettmp(x::KroneckerFactorization{T}, y::AbstractVector) where {T} =
+    Matrix{T}(undef, size(x.a,2), size(x.b,1))
+
+function LinearAlgebra.ldiv!(y!::Vector, x::KroneckerFactorization, y::AbstractVector;
+        tmp=gettmp(x, y) )
+    size(x,1) == length(y!) || throw(DimensionMismatch())
+    size(x,2) == length(y) || throw(DimensionMismatch())
+    tmp .= transpose(reshape(y, size(x.b,1), size(x.a,1)))
+    ldiv!(x.a, tmp)
+    y! .= vec(transpose(tmp))
+    ldiv!(x.b, reshape(y!, size(x.b,2), size(x.a,2)))
+    y!
+end
+
+LinearAlgebra.ldiv!(x::KroneckerFactorization, y!::Vector) = ldiv!(y!, x, y!)
 
 end # module

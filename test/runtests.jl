@@ -29,8 +29,8 @@ yr = rand(ComplexF64, size(k,1))
 @test k*y ≈ k_big*y
 @test yr'*k ≈ yr'*k_big
 
-a = rand(3,2)
-b = rand(2,3)
+a = rand(ComplexF64, 3, 2)
+b = rand(ComplexF64, 2, 3)
 k_big = kron(a,b)
 k = KroneckerProduct(a,b)
 
@@ -39,11 +39,14 @@ k = KroneckerProduct(a,b)
 
 @test tr(k) ≈ tr(k_big)
 
-a = rand(3,3)
-b = rand(2,2)
+a = rand(ComplexF64, 3, 3)
+b = rand(ComplexF64, 2, 2)
 k_big = kron(a,b)
 k = KroneckerProduct(a,b)
 
 @test det(k) ≈ det(k_big)
 
 @test tr(k) ≈ tr(k_big)
+
+y = rand(ComplexF64, size(k,1))
+@test k\y ≈ k_big\y
