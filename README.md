@@ -23,10 +23,10 @@ of a specialised method for multiplying a vector by a Kronecker product.)
 ```
 using KroneckerProducts
 using BenchmarkTools
-A = rand(20,20)
-B = rand(30,30)
+A = rand(20, 20)
+B = rand(30, 30)
 x = rand(600)
-@btime ($a⊗$b) * $x
+@btime ($A ⊗ $B) * $x
 ```
 
 For comparison, we can use Julia's built in `kron` function to compute the
@@ -34,10 +34,10 @@ Kronecker product explicitly, and measure the time it takes to multiply a vector
 by that.
 
 ```
-K = Base.kron(A,B)
-@assert K == a ⊗ b
-@assert K*x ≈ (a⊗b)*x
-@btime $K*$x
+K = Base.kron(A, B)
+@assert K == A ⊗ B
+@assert K * x ≈ (A ⊗ B) * x
+@btime $K * $x
 ```
 
 (Exact timings will vary between systems, but the larger the matrices involved
