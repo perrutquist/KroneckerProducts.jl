@@ -48,5 +48,5 @@ k = KroneckerProduct(a,b)
 
 @test tr(k) ≈ tr(k_big)
 
-y = rand(ComplexF64, size(k,1))
-@test k\y ≈ k_big\y
+yr = rand(ComplexF64, size(k,1))
+@test k\yr ≈ k_big\yr

@@ -16,17 +16,17 @@ Kronecker product.
 
 ## Example
 
-The following code will create a `KroneckerProduct` matrix and then measure
-the time it takes to multiply a vector by that matrix. (This takes advantage
-of a specialised method for multiplying a vector by a Kronecker product.)
+The following code will create a 600-by-600 `KroneckerProduct` and then measure
+the time it takes to multiply a vector by that. (This takes advantage of a
+specialised method for multiplying a vector by a Kronecker product.)
 
 ```
 using KroneckerProducts
 using BenchmarkTools
 A = rand(20, 20)
 B = rand(30, 30)
-x = rand(600)
-@btime ($A ⊗ $B) * $x
+x = rand(size(A,2)*size(B,2))
+@btime ($A ⊗ $B) * $x  # approximately 5 μs
 ```
 
 For comparison, we can use Julia's built in `kron` function to compute the
@@ -37,12 +37,12 @@ by that.
 K = Base.kron(A, B)
 @assert K == A ⊗ B
 @assert K * x ≈ (A ⊗ B) * x
-@btime $K * $x
+@btime $K * $x  # approximately 16 μs
 ```
 
-(Exact timings will vary between systems, but the larger the matrices involved
+Exact timings will vary between systems, but the larger the matrices involved
 the more advantageous it is to use a `KroneckerProduct` instead of `Base.kron`,
-and note that we did not even include the time it took to compute `K`.)
+and note that we did not even include the time it took to compute `K`.
 
 # Work in progress
 
