@@ -9,10 +9,14 @@ actually compute and store a Kronecker product in computer memory.
 
 KroneckerProducts.jl defines the `⊗` operator to create lazy `KroneckerProduct`
 objects. Creating such an object requires almost no time or storage, as it
-merely references the input arrays. The computation is performed each time an
-element of the new array is accessed, and many operations can be performed
+merely references the input matrices. The computation is performed each time an
+element of the new matrix is accessed, and many operations can be performed
 using specialised methods that do not require accessing all the elements of the
 Kronecker product.
+
+At the Julia REPL and in editing envrionments like Juno, the character "`⊗`"
+can be typed as "`\otimes`" followed by <tab>. The unexported
+`KroneckerProducts.kron` function is an ACII-compatible alternative.
 
 ## Example
 
@@ -40,7 +44,7 @@ K = Base.kron(A, B)
 @btime $K * $x  # approximately 16 μs
 ```
 
-Exact timings will vary between systems, but the larger the matrices involved
+Exact timings will vary between systems, but the larger the matrices involved,
 the more advantageous it is to use a `KroneckerProduct` instead of `Base.kron`,
 and note that we did not even include the time it took to compute `K`.
 
